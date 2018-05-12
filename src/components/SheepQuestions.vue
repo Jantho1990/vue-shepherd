@@ -15,15 +15,20 @@
 <script>
 import SheepQuestion from './SheepQuestion'
 export default {
+  name: 'SheepQuestions',
   components: {
     SheepQuestion
   },
-  data: function () {
+  data () {
     return {
       questions: [
         {
           id: 0,
           text: 'Is this not a question?'
+        },
+        {
+          id: 1,
+          text: 'Favorite part of the body?'
         }
       ]
     }

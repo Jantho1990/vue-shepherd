@@ -1,6 +1,6 @@
 <template>
   <main>
-    <SheepGame/>
+    <div :is="component"></div>
   </main>
 </template>
 
@@ -11,10 +11,32 @@ main {
 </style>
 
 <script>
-import SheepGame from './SheepGame'
+import SheepLeaderboard from './SheepLeaderboard'
+import SheepPlayers from './SheepPlayers'
+import SheepQuestions from './SheepQuestions'
+
 export default {
+  name: 'SheepMain',
   components: {
-    SheepGame
+    SheepLeaderboard,
+    SheepPlayers,
+    SheepQuestions
+  },
+  data () {
+    return {
+      //
+    }
+  },
+  methods: {
+    //
+  },
+  props: {
+    component: {
+      type: String,
+      required: true,
+      default: 'SheepQuestions',
+      validator: (value) => Object.keys(this.a.components).reduce((c, v) => c ? true : v === value, false)
+    }
   }
 }
 </script>

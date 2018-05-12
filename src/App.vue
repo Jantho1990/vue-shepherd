@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <AppHeader/>
-    <AppMain/>
+    <AppHeader @change-main-component="changeMainComponent"/>
+    <AppMain :component="component"/>
   </div>
 </template>
 
@@ -14,6 +14,29 @@ export default {
   components: {
     AppHeader,
     AppMain
+  },
+  data () {
+    return {
+      component: 'SheepGame',
+      players: []
+    }
+  },
+  methods: {
+    getPlayer (id) {
+      return this.players.filter(v => v.id === id)[0]
+    },
+    getPlayerByName (name) {
+      return this.players.filter(v => v.name.toLowerCase().strPos(name.toLowerCase) > -1)[0]
+    },
+    addPlayer (player) {
+      this.players.push(player)
+    },
+    removePlayer (id) {
+
+    },
+    changeMainComponent (component) {
+      this.component = component
+    }
   }
 }
 </script>

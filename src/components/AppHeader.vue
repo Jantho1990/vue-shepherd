@@ -5,8 +5,9 @@
     </div>
     <nav class="nav">
       <ul>
-        <li>Questions</li>
-        <li>Players</li>
+        <li @click="menuClick('SheepLeaderboard')">Leaderboard</li>
+        <li @click="menuClick('SheepQuestions')">Questions</li>
+        <li @click="menuClick('SheepPlayers')">Players</li>
       </ul>
     </nav>
   </header>
@@ -35,6 +36,9 @@ header.app-header {
         align-items: center;
         justify-content: center;
         list-style: none;
+        li {
+          margin: 0 1em;
+        }
       }
     }
   }
@@ -43,8 +47,14 @@ header.app-header {
 
 <script>
 export default {
-  data: function () {
+  name: 'AppHeader',
+  data () {
     return {}
+  },
+  methods: {
+    menuClick (nav) {
+      this.$emit('change-main-component', nav)
+    }
   }
 }
 </script>
