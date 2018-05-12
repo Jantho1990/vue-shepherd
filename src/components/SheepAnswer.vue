@@ -1,6 +1,6 @@
 <template>
   <li class="sheep-answer">
-    <div>{{ text }}</div>
+    <div>{{ text }} -- {{ points }}</div>
     <div class="players">
       <ul>
         <li :key="player.answer" v-for="player in players">{{ player.name }}</li>
@@ -20,6 +20,11 @@
 
 <script>
 export default {
+  computed: {
+    points: function () {
+      return this.players.length > 0 ? this.players.length - 1 : 0
+    }
+  },
   data: function () {
     return {
       newPlayer: '',
