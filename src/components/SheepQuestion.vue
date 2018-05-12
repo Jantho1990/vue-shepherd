@@ -19,7 +19,7 @@
 </template>
 
 <style lang="scss" scoped>
-.sheep-answers ul {
+.sheep-answers > ul {
   display: flex;
   flex-direction: column;
   align-items: center;

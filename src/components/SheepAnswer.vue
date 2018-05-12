@@ -14,20 +14,21 @@
 </template>
 
 <style lang="scss" scoped>
-li {
-  list-style: none;
+li.sheep-answer {
   margin: auto;
-}
-
-.players ul {
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: center;
-  li {
-    width: 30%;
+  .players ul {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    flex-wrap: wrap;
+    text-align: left;
+    li {
+      width: 30%;
+    }
   }
 }
+
 </style>
 
 <script>
