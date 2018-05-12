@@ -11,7 +11,7 @@
         ></SheepAnswer>
       </ul>
     </div>
-    <div class="sheep-answer-form">
+    <div @keypress.enter="addNewAnswer" class="sheep-answer-form">
       <input type="text" v-model="newAnswer">
       <button @click="addNewAnswer">Add Answer</button>
     </div>
@@ -19,7 +19,12 @@
 </template>
 
 <style lang="scss" scoped>
-
+.sheep-answers ul {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
 </style>
 
 <script>

@@ -7,7 +7,6 @@
       </ul>
     </div>
     <div @keypress.enter="submitPlayerAnswer" class="add-player">
-      <label for="answer-player">Add Player</label>
       <input type="text" name="answer-player" v-model="newPlayer">
       <button @click="submitPlayerAnswer">Add Player</button>
     </div>
@@ -15,7 +14,20 @@
 </template>
 
 <style lang="scss" scoped>
+li {
+  list-style: none;
+  margin: auto;
+}
 
+.players ul {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: center;
+  li {
+    width: 30%;
+  }
+}
 </style>
 
 <script>
