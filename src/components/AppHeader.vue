@@ -43,6 +43,8 @@ header.app-header {
 
 <script>
 export default {
-  
+  data: function () {
+    return {}
+  }
 }
 </script>

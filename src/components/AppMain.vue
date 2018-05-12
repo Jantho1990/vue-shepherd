@@ -1,6 +1,6 @@
 <template>
   <main>
-    <SheepQuestion/>
+    <SheepGame/>
   </main>
 </template>
 
@@ -11,10 +11,10 @@ main {
 </style>
 
 <script>
-import SheepQuestion from "./SheepQuestion"
+import SheepGame from './SheepGame'
 export default {
   components: {
-    SheepQuestion
+    SheepGame
   }
 }
 </script>

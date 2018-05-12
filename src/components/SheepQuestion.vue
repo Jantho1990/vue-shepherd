@@ -1,6 +1,6 @@
 <template>
   <div class="sheep-question">
-    <div class="title">{{ question }}</div>
+    <div class="title">{{ text }}</div>
     <div class="sheep-answers">
       <ul>
         <SheepAnswer
@@ -56,7 +56,14 @@ export default {
     }
   },
   props: {
-    question: {
+    id: {
+      type: Number,
+      required: true,
+      validator: function (value) {
+        return typeof value === 'number'
+      }
+    },
+    text: {
       type: String,
       required: true,
       validator: function (value) {
