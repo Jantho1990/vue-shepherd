@@ -32,6 +32,16 @@ export default {
         }
       ]
     }
+  },
+  props: {
+    players: {
+      type: Array,
+      required: true,
+      default () { return [] },
+      validator (value) {
+        return Array.isArray(value)
+      }
+    }
   }
 }
 </script>

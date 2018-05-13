@@ -1,7 +1,13 @@
 <template>
   <div id="app">
-    <AppHeader @change-main-component="changeMainComponent"/>
-    <AppMain :component="component"/>
+    <AppHeader
+      @change-main-component="changeMainComponent"
+    />
+    <AppMain
+      :component="component"
+      :players="players"
+      @new-player="addPlayer"
+    />
   </div>
 </template>
 
@@ -17,7 +23,8 @@ export default {
   },
   data () {
     return {
-      component: 'SheepGame',
+      component: 'SheepQuestions',
+      playerIdCt: 0,
       players: []
     }
   },
@@ -29,7 +36,11 @@ export default {
       return this.players.filter(v => v.name.toLowerCase().strPos(name.toLowerCase) > -1)[0]
     },
     addPlayer (player) {
-      this.players.push(player)
+      let { name } = player
+      this.players.push({
+        id: this.playerIdCt++,
+        name
+      })
     },
     removePlayer (id) {
 

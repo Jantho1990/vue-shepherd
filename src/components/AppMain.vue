@@ -1,6 +1,10 @@
 <template>
   <main>
-    <div :is="component"></div>
+    <div
+      :is="component"
+      :players="players"
+      @new-player="newPlayer"
+    ></div>
   </main>
 </template>
 
@@ -28,7 +32,9 @@ export default {
     }
   },
   methods: {
-    //
+    newPlayer (player) {
+      this.$emit('new-player', player)
+    }
   },
   props: {
     component: {
@@ -36,6 +42,14 @@ export default {
       required: true,
       default: 'SheepQuestions',
       validator: (value) => Object.keys(this.a.components).reduce((c, v) => c ? true : v === value, false)
+    },
+    players: {
+      type: Array,
+      required: true,
+      default () { return [] },
+      validator (value) {
+        return Array.isArray(value)
+      }
     }
   }
 }
