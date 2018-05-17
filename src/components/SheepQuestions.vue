@@ -14,6 +14,7 @@
 
 <script>
 import SheepQuestion from './SheepQuestion'
+
 export default {
   name: 'SheepQuestions',
   components: {

@@ -23,11 +23,18 @@
 
 <script>
 import SheepPlayer from './SheepPlayer'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SheepPlayers',
   components: {
     SheepPlayer
+  },
+  computed: {
+    ...mapGetters([
+      'players',
+      'player'
+    ])
   },
   data: function () {
     return {
@@ -39,19 +46,19 @@ export default {
       let newPlayer = {
         name: this.newPlayerName
       }
-      this.$emit('new-player', newPlayer)
+      this.$store.dispatch('storePlayer', newPlayer)
       this.newPlayerName = ''
     }
   },
   props: {
-    players: {
+    /* players: {
       type: Array,
       required: true,
       default () { return [] },
       validator (value) {
         return Array.isArray(value)
       }
-    }
+    } */
   }
 }
 </script>
