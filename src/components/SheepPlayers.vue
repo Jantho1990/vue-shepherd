@@ -32,8 +32,7 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'players',
-      'player'
+      'players'
     ])
   },
   data: function () {

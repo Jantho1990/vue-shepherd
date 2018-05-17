@@ -12,8 +12,8 @@ export const store = new Vuex.Store({
     players: state => {
       return state.players
     },
-    player: (state, ident) => {
-      return state.players.filter(p => p.id === ident || p.name === ident)
+    player: (state) => (ident) => {
+      return state.players.find(p => p.id === ident)
     }
   },
   mutations: {
@@ -24,7 +24,7 @@ export const store = new Vuex.Store({
       state.players[id] = player
     },
     deletePlayer: (state, id) => {
-      delete state.players[id]
+      state.players.splice(id, 1)
     }
   },
   actions: {
@@ -37,7 +37,7 @@ export const store = new Vuex.Store({
       }
     },
     deletePlayer ({commit, state}, player) {
-      let id = state.players.findIndex(p => p.id === player.id || p.name === player.name)
+      let id = state.players.findIndex(p => p.id === player.id)
       if (id > -1) {
         commit('deletePlayer', id)
       }
