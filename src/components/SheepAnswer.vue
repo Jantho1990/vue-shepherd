@@ -12,6 +12,7 @@
         :options="allPlayers"
         :searchable="true"
         track-by="name"
+        @select="onPlayerAdd"
         ></multiselect>
     </div>
   </li>
@@ -58,6 +59,11 @@ export default {
     }
   },
   methods: {
+    onPlayerAdd (newPlayer) {
+      console.log(arguments)
+      console.log(newPlayer)
+      this.$emit('answer-update-newplayer', this.id, newPlayer)
+    },
     submitPlayerAnswer: function () {
       let newPlayer = {
         name: this.newPlayer

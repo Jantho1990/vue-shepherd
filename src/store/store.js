@@ -11,8 +11,9 @@ export const store = new Vuex.Store({
     playerId: 0
   },
   getters: {
-    answer: (state) => (ident) => {
-      return state.answers.find(a => a.id === ident)
+    answer: (state) => (questionId, ident) => {
+      return state.answers.filter(a => a.questionId === questionId)
+        .find(a => a.id === ident)
     },
     answers: state => (questionId) => {
       return state.answers.filter(a => a.questionId === questionId)
@@ -31,8 +32,11 @@ export const store = new Vuex.Store({
         ...answer
       })
     },
-    updateAnswer: (state, answer, id) => {
-      state.answers[id] = answer
+    updateAnswer: (state, {answer, id}) => {
+      state.answers[id] = {
+        ...state.answers[id],
+        ...answer
+      }
     },
     deleteAnswer: (state, id) => {
       state.answers.splice(id, 1)
@@ -51,11 +55,17 @@ export const store = new Vuex.Store({
     }
   },
   actions: {
-    storeAnswer ({ commit, state }, answer) {
-      let id = state.answers.findIndex(a => a.id === answer.id)
-      if (id > -1) {
+    storeAnswer ({ commit, state }, payload) {
+      let { questionId, answer } = payload
+      console.log('answer', answer)
+      let id = state.answers.filter(a => a.questionId === questionId)
+        .find(a => a.id === answer.id)
+      if (typeof id !== 'undefined') {
+        console.log('lark', id)
         commit('updateAnswer', answer, id)
       } else {
+        console.log('moon', id, answer)
+        // TODO: Figure out a better solution for injecting players...
         commit('createAnswer', answer)
       }
     },

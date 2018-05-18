@@ -49,14 +49,34 @@ export default {
     addNewAnswer: function () {
       let newAnswer = {
         text: this.newAnswer,
-        questionId: this.id
+        questionId: this.id,
+        players: []
       }
-      this.$store.dispatch('storeAnswer', newAnswer)
+      console.log('newAnswer', newAnswer)
+      this.$store.dispatch('storeAnswer', {
+        questionId: this.id,
+        answer: newAnswer
+      })
       this.newAnswer = ''
     },
-    answerPlayerUpdate: function (answer, newPlayer) {
-      let i = this.answers.findIndex(v => v.id === answer.id)
-      this.answers[i].players.push(newPlayer)
+    answerPlayerUpdate: function (answerId, newPlayer) {
+      // let i = this.answers.findIndex(v => v.id === answer.id)
+      // this.answers[i].players.push(newPlayer)
+      console.log('ninnies', newPlayer.name)
+      let answer = this.$store.getters.answer(this.id, answerId)
+      console.log(answer)
+      let updatedAnswer = {
+        ...answer,
+        players: [
+          ...answer.players,
+          newPlayer.id
+        ]
+      }
+      console.log('sissies')
+      this.$store.dispatch('storeAnswer', {
+        questionId: this.id,
+        answer: updatedAnswer
+      })
     }
   },
   props: {
