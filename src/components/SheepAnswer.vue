@@ -4,12 +4,12 @@
     <div class="players">
       <multiselect
         label="name"
-        v-model="players"
+        v-model="selectedPlayers"
         :clear-on-select="false"
         :close-on-select="false"
         :hide-selected="true"
         :multiple=true
-        :options="allPlayers"
+        :options="players"
         :searchable="true"
         track-by="name"
         @select="onPlayerAdd"
@@ -45,17 +45,17 @@ export default {
     Multiselect
   },
   computed: {
-    ...mapGetters({
-      'allPlayers': 'players'
-    }),
+    ...mapGetters([
+      'players'
+    ]),
     points: function () {
-      return this.players.length > 0 ? this.players.length - 1 : 0
+      return this.selectedPlayers.length > 0 ? this.selectedPlayers.length - 1 : 0
     }
   },
   data: function () {
     return {
       newPlayer: '',
-      players: []
+      selectedPlayers: []
     }
   },
   methods: {
@@ -82,6 +82,13 @@ export default {
       }
     },
     id: {
+      type: Number,
+      required: true,
+      validator: function (value) {
+        return typeof value === 'number'
+      }
+    },
+    questionId: {
       type: Number,
       required: true,
       validator: function (value) {

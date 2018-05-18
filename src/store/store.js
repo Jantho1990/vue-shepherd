@@ -58,13 +58,13 @@ export const store = new Vuex.Store({
     storeAnswer ({ commit, state }, payload) {
       let { questionId, answer } = payload
       console.log('answer', answer)
-      let id = state.answers.filter(a => a.questionId === questionId)
+      let _answer = state.answers.filter(a => a.questionId === questionId)
         .find(a => a.id === answer.id)
-      if (typeof id !== 'undefined') {
-        console.log('lark', id)
-        commit('updateAnswer', answer, id)
+      if (typeof _answer !== 'undefined') {
+        console.log('lark', _answer)
+        commit('updateAnswer', {answer, id: _answer.id})
       } else {
-        console.log('moon', id, answer)
+        console.log('moon', _answer, answer)
         // TODO: Figure out a better solution for injecting players...
         commit('createAnswer', answer)
       }
