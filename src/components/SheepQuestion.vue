@@ -28,7 +28,6 @@
 </style>
 
 <script>
-import { mapGetters } from 'vuex'
 import SheepAnswer from './SheepAnswer'
 
 export default {
@@ -36,9 +35,9 @@ export default {
     SheepAnswer
   },
   computed: {
-    ...mapGetters([
-      'answers'
-    ])
+    answers () {
+      return this.$store.getters.answers(this.id)
+    }
   },
   data: function () {
     return {
@@ -49,8 +48,8 @@ export default {
   methods: {
     addNewAnswer: function () {
       let newAnswer = {
-        id: this.answerIdCounter,
-        text: this.newAnswer
+        text: this.newAnswer,
+        questionId: this.id
       }
       this.$store.dispatch('storeAnswer', newAnswer)
       this.newAnswer = ''

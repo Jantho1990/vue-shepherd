@@ -14,8 +14,8 @@ export const store = new Vuex.Store({
     answer: (state) => (ident) => {
       return state.answers.find(a => a.id === ident)
     },
-    answers: state => {
-      return state.answers
+    answers: state => (questionId) => {
+      return state.answers.filter(a => a.questionId === questionId)
     },
     player: (state) => (ident) => {
       return state.players.find(p => p.id === ident)
