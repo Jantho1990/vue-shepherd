@@ -2,13 +2,17 @@
   <li class="sheep-answer">
     <div>{{ text }} -- {{ points }}</div>
     <div class="players">
-      <ul>
-        <li :key="player.answer" v-for="player in players">{{ player.name }}</li>
-      </ul>
-    </div>
-    <div @keypress.enter="submitPlayerAnswer" class="add-player">
-      <input type="text" name="answer-player" v-model="newPlayer">
-      <button @click="submitPlayerAnswer">Add Player</button>
+      <multiselect
+        label="name"
+        v-model="msValue"
+        :clear-on-select="false"
+        :close-on-select="false"
+        :hide-selected="true"
+        :multiple=true
+        :options="allPlayers"
+        :searchable="true"
+        track-by="name"
+        ></multiselect>
     </div>
   </li>
 </template>
@@ -32,14 +36,24 @@ li.sheep-answer {
 </style>
 
 <script>
+import { mapGetters } from 'vuex'
+import Multiselect from 'vue-multiselect'
+
 export default {
+  components: {
+    Multiselect
+  },
   computed: {
+    ...mapGetters({
+      'allPlayers': 'players'
+    }),
     points: function () {
       return this.players.length > 0 ? this.players.length - 1 : 0
     }
   },
   data: function () {
     return {
+      msValue: [],
       newPlayer: '',
       players: []
     }
