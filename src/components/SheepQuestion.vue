@@ -28,26 +28,31 @@
 </style>
 
 <script>
+import { mapGetters } from 'vuex'
 import SheepAnswer from './SheepAnswer'
 
 export default {
   components: {
     SheepAnswer
   },
+  computed: {
+    ...mapGetters([
+      'answers'
+    ])
+  },
   data: function () {
     return {
       answerIdCounter: 0, // doesn't feel right...
-      answers: [],
       newAnswer: ''
     }
   },
   methods: {
     addNewAnswer: function () {
-      this.answerIdCounter++
-      this.answers.push({
+      let newAnswer = {
         id: this.answerIdCounter,
         text: this.newAnswer
-      })
+      }
+      this.$store.dispatch('storeAnswer', newAnswer)
       this.newAnswer = ''
     },
     answerPlayerUpdate: function (answer, newPlayer) {
