@@ -4,7 +4,7 @@
     <div class="players">
       <multiselect
         label="name"
-        v-model="msValue"
+        v-model="players"
         :clear-on-select="false"
         :close-on-select="false"
         :hide-selected="true"
@@ -53,7 +53,6 @@ export default {
   },
   data: function () {
     return {
-      msValue: [],
       newPlayer: '',
       players: []
     }
