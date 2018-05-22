@@ -55,10 +55,14 @@ export default {
   data: function () {
     return {
       newPlayer: '',
-      selectedPlayers: []
+      selectedPlayers: this.getSelectedPlayers()
     }
   },
   methods: {
+    getSelectedPlayers () {
+      let playerIds = this.$store.getters.answer(this.questionId, this.id).players
+      return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
+    },
     onPlayerAdd (newPlayer) {
       console.log(arguments)
       console.log(newPlayer)
