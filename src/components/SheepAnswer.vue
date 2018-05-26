@@ -9,7 +9,7 @@
         :close-on-select="false"
         :hide-selected="true"
         :multiple=true
-        :options="players"
+        :options="unselectedPlayers"
         :searchable="true"
         track-by="name"
         @select="onPlayerAdd"
@@ -46,10 +46,28 @@ export default {
   },
   computed: {
     ...mapGetters([
-      'players'
+      'players',
+      'answers'
     ]),
     points: function () {
       return this.selectedPlayers.length > 0 ? this.selectedPlayers.length - 1 : 0
+    },
+    unselectedPlayers: function () {
+      let allSelectedPlayers = this.answers(this.questionId).reduce((carry, answer) => {
+        answer.players.forEach(playerId => {
+          if (carry.length === 0 || carry.find(id => id === playerId) === undefined) {
+            carry.push(playerId)
+          }
+        })
+        return carry
+      }, [])
+      // if (allSelectedPlayers.length === 0) return this.players
+      return this.players.filter(player => {
+        if (allSelectedPlayers.find(id => id === player.id) === undefined) {
+          return true
+        }
+        return false
+      })
     }
   },
   data: function () {
@@ -64,8 +82,6 @@ export default {
       return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
     },
     onPlayerAdd (newPlayer) {
-      console.log(arguments)
-      console.log(newPlayer)
       this.$emit('answer-update-newplayer', this.id, newPlayer)
     },
     submitPlayerAnswer: function () {
