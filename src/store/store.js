@@ -8,7 +8,9 @@ export const store = new Vuex.Store({
     answers: [],
     answerId: 0,
     players: [],
-    playerId: 0
+    playerId: 0,
+    questions: [],
+    questionId: 0
   },
   getters: {
     answer: (state) => (questionId, ident) => {
@@ -23,6 +25,12 @@ export const store = new Vuex.Store({
     },
     players: state => {
       return state.players
+    },
+    question: state => (id) => {
+      return state.questions.find(q => q.id === id)
+    },
+    questions: state => {
+      return state.questions
     }
   },
   mutations: {
@@ -52,6 +60,21 @@ export const store = new Vuex.Store({
     },
     deletePlayer: (state, id) => {
       state.players.splice(id, 1)
+    },
+    createQuestion: (state, question) => {
+      state.questions.push({
+        id: state.questionId++,
+        ...question
+      })
+    },
+    updateQuestion: (state, {question, id}) => {
+      state.questions = {
+        ...state.questions[id],
+        ...question
+      }
+    },
+    deleteQuestion: (state, id) => {
+      state.questions.splice(id, 1)
     }
   },
   actions: {
@@ -84,6 +107,20 @@ export const store = new Vuex.Store({
       let id = state.players.findIndex(p => p.id === player.id)
       if (id > -1) {
         commit('deletePlayer', id)
+      }
+    },
+    storeQuestion ({commit, state}, question) {
+      let _question = state.questions.find(q => q.id === question.id)
+      if (typeof _question !== 'undefined') {
+        commit('updateQuestion', {question, id: _question.id})
+      } else {
+        commit('createQuestion', question)
+      }
+    },
+    deleteQuestion ({commit, state}, question) {
+      let id = state.questions.findIndex(q => q.id === question.id)
+      if (id > 1) {
+        commit('deleteQuestion', id)
       }
     }
   }

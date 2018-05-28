@@ -77,7 +77,28 @@ export default {
         questionId: this.id,
         answer: updatedAnswer
       })
-    }
+    },
+    getSelectedPlayers () {
+      let playerIds = this.$store.getters.answer(this.questionId, this.id).players
+      return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
+    },
+    getUnselectedPlayers () {
+      let allSelectedPlayers = this.answers(this.questionId).reduce((carry, answer) => {
+        answer.players.forEach(playerId => {
+          if (carry.length === 0 || carry.find(id => id === playerId) === undefined) {
+            carry.push(playerId)
+          }
+        })
+        return carry
+      }, [])
+      // if (allSelectedPlayers.length === 0) return this.players
+      return this.players.filter(player => {
+        if (allSelectedPlayers.find(id => id === player.id) === undefined) {
+          return true
+        }
+        return false
+      })
+    },
   },
   props: {
     id: {

@@ -52,7 +52,36 @@ export default {
     points: function () {
       return this.selectedPlayers.length > 0 ? this.selectedPlayers.length - 1 : 0
     },
-    unselectedPlayers: function () {
+    /* selectedPlayers () {
+      return this.$store.getters.question(this.questionId).selectedPlayers
+    }, */
+    unselectedPlayers () {
+      return this.$store.getters.question(this.questionId).unselectedPlayers
+    }
+  },
+  data: function () {
+    return {
+      newPlayer: '',
+      selectedPlayers: this.getSelectedPlayers()
+    }
+  },
+  methods: {
+    onPlayerAdd (newPlayer) {
+      this.$emit('answer-update-newplayer', this.id, newPlayer)
+    },
+    submitPlayerAnswer: function () {
+      let newPlayer = {
+        name: this.newPlayer
+      }
+      this.players.push(newPlayer)
+      this.$emit('answer-update-newplayer', this.answer, newPlayer)
+      this.newPlayer = ''
+    },
+    getSelectedPlayers () {
+      let playerIds = this.$store.getters.answer(this.questionId, this.id).players
+      return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
+    },
+    getUnselectedPlayers () {
       let allSelectedPlayers = this.answers(this.questionId).reduce((carry, answer) => {
         answer.players.forEach(playerId => {
           if (carry.length === 0 || carry.find(id => id === playerId) === undefined) {
@@ -68,30 +97,7 @@ export default {
         }
         return false
       })
-    }
-  },
-  data: function () {
-    return {
-      newPlayer: '',
-      selectedPlayers: this.getSelectedPlayers()
-    }
-  },
-  methods: {
-    getSelectedPlayers () {
-      let playerIds = this.$store.getters.answer(this.questionId, this.id).players
-      return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
     },
-    onPlayerAdd (newPlayer) {
-      this.$emit('answer-update-newplayer', this.id, newPlayer)
-    },
-    submitPlayerAnswer: function () {
-      let newPlayer = {
-        name: this.newPlayer
-      }
-      this.players.push(newPlayer)
-      this.$emit('answer-update-newplayer', this.answer, newPlayer)
-      this.newPlayer = ''
-    }
   },
   props: {
     text: {

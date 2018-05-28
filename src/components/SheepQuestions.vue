@@ -20,6 +20,17 @@ export default {
   components: {
     SheepQuestion
   },
+  created () {
+    // Temporary hack until we get a legit question form
+    this.questions.forEach(question => {
+      this.$store.dispatch('storeQuestion', {
+        ...question,
+        answers: [],
+        selectedPlayers: [],
+        unselectedPlayers: []
+      })
+    })
+  },
   data () {
     return {
       questions: [
