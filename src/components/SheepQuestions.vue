@@ -14,6 +14,7 @@
 
 <script>
 import SheepQuestion from './SheepQuestion'
+import { mapGetters } from 'vuex'
 
 export default {
   name: 'SheepQuestions',
@@ -22,27 +23,32 @@ export default {
   },
   created () {
     // Temporary hack until we get a legit question form
-    this.questions.forEach(question => {
-      this.$store.dispatch('storeQuestion', {
-        ...question,
-        answers: [],
-        selectedPlayers: [],
-        unselectedPlayers: []
+    let questions = [
+      {
+        // id: 0,
+        text: 'Is this not a question?'
+      },
+      {
+        // id: 1,
+        text: 'Favorite part of the body?'
+      }
+    ]
+    questions.forEach(question => {
+      this.$store.dispatch('questions/create', {
+        question: {
+          ...question
+        }
       })
+    })
+  },
+  computed: {
+    ...mapGetters({
+      questions: 'questions/all'
     })
   },
   data () {
     return {
-      questions: [
-        {
-          id: 0,
-          text: 'Is this not a question?'
-        },
-        {
-          id: 1,
-          text: 'Favorite part of the body?'
-        }
-      ]
+      questions: this.questions.all
     }
   },
   props: {

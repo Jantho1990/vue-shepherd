@@ -97,7 +97,7 @@ export default {
         }
         return false
       })
-    },
+    }
   },
   props: {
     text: {
