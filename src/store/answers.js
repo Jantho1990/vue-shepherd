@@ -1,15 +1,21 @@
+import VueMap from './proxy'
+
 export default {
   namespaced: true,
   state () {
     return {
-      answers: new Map(),
-      answerId: 0
+      answers: new VueMap(),
+      answerId: 0,
+      timestamp: 0
     }
   },
   getters: {
-    all: state => Array.from(state.answers.values()),
+    all: state => state.timestamp && Array.from(state.answers.values()),
     forQuestion: state => questionId => {
-      return Array.from(state.answers.values())
+      console.log('Mark', state.answers)
+      console.log('Alba', state.answers.set('rip', 'tear'))
+      state.answers.set('test', 'value')
+      return state.timestamp && Array.from(state.answers.values())
         .filter(answer => answer.questionId === questionId)
     },
     withId: state => id => state.answers.get(id),
@@ -24,6 +30,9 @@ export default {
     },
     store: (state, answer) => {
       state.answers.set(answer.id, answer)
+      state.answers.set('Haaa', 'booom')
+      console.log('RABIES', state.answers._timestamp, state.answers)
+      state.timestamp = state.answers._timestamp
     },
     delete: (state, id) => {
       state.answers.delete(id)
