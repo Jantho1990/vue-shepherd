@@ -52,17 +52,16 @@ export default {
     points: function () {
       return this.selectedPlayers.length > 0 ? this.selectedPlayers.length - 1 : 0
     },
-    /* selectedPlayers () {
-      return this.$store.getters.question(this.questionId).selectedPlayers
-    }, */
+    selectedPlayers () {
+      return this.$store.getters['answers/getAnswerPlayers'](this.id)
+    },
     unselectedPlayers () {
-      return this.$store.getters.question(this.questionId).unselectedPlayers
+      return this.$store.getters['questions/unselectedPlayers'](this.questionId)
     }
   },
   data: function () {
     return {
-      newPlayer: '',
-      selectedPlayers: this.getSelectedPlayers()
+      newPlayer: ''
     }
   },
   methods: {

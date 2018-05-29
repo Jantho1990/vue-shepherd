@@ -28,6 +28,10 @@ class VueMap {
     })
     return proxy
   }
+
+  static forceUpdate (ts, val) {
+    return ts && val
+  }
 }
 
 export default VueMap

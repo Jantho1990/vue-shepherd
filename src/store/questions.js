@@ -1,10 +1,11 @@
-function getSelectedPlayers (state, getters, id) {
+function getSelectedPlayers(state, rootState, id) {
+  console.log('fish hole',state.questions.get(id))
   return state.questions.get(id)
-    .answers.map(id => getters.answers.withId(id).players)
-    .flat()
-    .sort((a, b) => Number(a) > Number(b) ? 1 : -1)
+    .answers.map((carry, id) => {
+      rootState.answers.get(id).players
+    }).sort((a, b) => Number(a) > Number(b) ? 1 : -1)
     .filter((id, i, arr) => i < arr.length ? id === arr[i + 1] : true)
-    .map(id => getters.players.withId(id))
+    .map(id => rootState.players.get(id))
 }
 
 export default {
@@ -18,12 +19,12 @@ export default {
   getters: {
     all: state => Array.from(state.questions.values()),
     withId: state => id => state.questions.get(id),
-    selectedPlayers: (state, getters) => id => {
-      return getSelectedPlayers(state, getters, id)
+    selectedPlayers: (state, getters, rootState) => id => {
+      return getSelectedPlayers(state, rootState, id)
     },
-    unselectedPlayers: (state, getters) => id => {
-      let selectedPlayers = getSelectedPlayers(state, getters, id)
-      return getters.players.all()
+    unselectedPlayers: (state, getters, rootState) => id => {
+      let selectedPlayers = getSelectedPlayers(state, rootState, id)
+      return Array.from(Object.values(rootState.players))
         .filter(player => {
           return selectedPlayers.find(sp => sp.id === player.id) === undefined
         })
@@ -47,7 +48,8 @@ export default {
       if (state.questions.get(question.id) === undefined) {
         commit('store', {
           ...question,
-          id: state.questionId
+          id: state.questionId,
+          answers: []
         })
         commit('incrementCounter')
       }

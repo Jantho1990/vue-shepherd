@@ -4,7 +4,7 @@ export default {
   namespaced: true,
   state () {
     return {
-      answers: new VueMap(),
+      answers: new Map(),
       answerId: 0,
       timestamp: 0
     }
@@ -32,7 +32,7 @@ export default {
       state.answers.set(answer.id, answer)
       state.answers.set('Haaa', 'booom')
       console.log('RABIES', state.answers._timestamp, state.answers)
-      state.timestamp = state.answers._timestamp
+      state.timestamp = Date.now()
     },
     delete: (state, id) => {
       state.answers.delete(id)
