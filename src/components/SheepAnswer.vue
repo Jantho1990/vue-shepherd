@@ -37,7 +37,7 @@ li.sheep-answer {
 </style>
 
 <script>
-import { mapGetters } from 'vuex'
+// import { mapGetters } from 'vuex'
 import Multiselect from 'vue-multiselect'
 
 export default {
@@ -45,24 +45,19 @@ export default {
     Multiselect
   },
   computed: {
-    ...mapGetters([
-      'players',
-      'answers'
-    ]),
     points: function () {
       return this.selectedPlayers.length > 0 ? this.selectedPlayers.length - 1 : 0
     },
-    /* selectedPlayers () {
-      return this.$store.getters.question(this.questionId).selectedPlayers
-    }, */
+    selectedPlayers () {
+      return this.$store.getters['answers/getAnswerPlayers'](this.id)
+    },
     unselectedPlayers () {
-      return this.$store.getters.question(this.questionId).unselectedPlayers
+      return this.$store.getters['questions/unselectedPlayers'](this.questionId)
     }
   },
   data: function () {
     return {
-      newPlayer: '',
-      selectedPlayers: this.getSelectedPlayers()
+      newPlayer: ''
     }
   },
   methods: {
@@ -76,27 +71,6 @@ export default {
       this.players.push(newPlayer)
       this.$emit('answer-update-newplayer', this.answer, newPlayer)
       this.newPlayer = ''
-    },
-    getSelectedPlayers () {
-      let playerIds = this.$store.getters.answer(this.questionId, this.id).players
-      return playerIds.map(id => this.$store.getters.players.find(player => player.id === id))
-    },
-    getUnselectedPlayers () {
-      let allSelectedPlayers = this.answers(this.questionId).reduce((carry, answer) => {
-        answer.players.forEach(playerId => {
-          if (carry.length === 0 || carry.find(id => id === playerId) === undefined) {
-            carry.push(playerId)
-          }
-        })
-        return carry
-      }, [])
-      // if (allSelectedPlayers.length === 0) return this.players
-      return this.players.filter(player => {
-        if (allSelectedPlayers.find(id => id === player.id) === undefined) {
-          return true
-        }
-        return false
-      })
     }
   },
   props: {

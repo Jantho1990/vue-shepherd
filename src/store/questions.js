@@ -1,29 +1,33 @@
-function getSelectedPlayers (state, getters, id) {
-  return state.questions.get(id)
-    .answers.map(id => getters.answers.withId(id).players)
-    .flat()
-    .sort((a, b) => Number(a) > Number(b) ? 1 : -1)
+function getSelectedPlayers (state, rootState, id) {
+  // console.log('FFFF', getters)
+  console.log('FISH', state.questions[id])
+  return state.questions[id]
+    .answers.map((carry, id) => {
+      rootState.answers[id].players
+    }).sort((a, b) => Number(a) > Number(b) ? 1 : -1)
     .filter((id, i, arr) => i < arr.length ? id === arr[i + 1] : true)
-    .map(id => getters.players.withId(id))
+    .map(id => rootState.players[id])
 }
 
 export default {
   namespaced: true,
   state () {
     return {
-      questions: new Map(),
+      questions: {},
       questionId: 0
     }
   },
   getters: {
-    all: state => Array.from(state.questions.values()),
-    withId: state => id => state.questions.get(id),
-    selectedPlayers: (state, getters) => id => {
-      return getSelectedPlayers(state, getters, id)
+    all: state => Array.from(Object.values(state.questions)),
+    withId: state => id => state.questions[id],
+    selectedPlayers: (state, getters, rootState) => id => {
+      console.log('ROOTSTATE', rootState)
+      return getSelectedPlayers(state, rootState, id)
     },
-    unselectedPlayers: (state, getters) => id => {
-      let selectedPlayers = getSelectedPlayers(state, getters, id)
-      return getters.players.all()
+    unselectedPlayers: (state, getters, rootState) => id => {
+      console.log('SHUT UP', rootState)
+      let selectedPlayers = getSelectedPlayers(state, rootState, id)
+      return Array.from(Object.values(rootState.players))
         .filter(player => {
           return selectedPlayers.find(sp => sp.id === player.id) === undefined
         })
@@ -35,7 +39,12 @@ export default {
     },
     store: (state, question) => {
       console.log('question', question)
-      state.questions.set(question.id, question)
+      // state.questions.set(question.id, question)
+      state.questions[question.id] = Object.assign(
+        {},
+        state.questions[question.id],
+        question
+      )
     },
     delete: (state, id) => {
       state.questions.delete(id)
@@ -44,10 +53,11 @@ export default {
   actions: {
     create ({ commit, state }, payload) {
       let { question } = payload
-      if (state.questions.get(question.id) === undefined) {
+      if (state.questions[question.id] === undefined) {
         commit('store', {
           ...question,
-          id: state.questionId
+          id: state.questionId,
+          answers: []
         })
         commit('incrementCounter')
       }
@@ -57,7 +67,7 @@ export default {
       commit('store', question)
     },
     delete ({ commit, state }, id) {
-      if (state.questions.get(id) !== undefined) {
+      if (state.questions[id] !== undefined) {
         commit('delete', id)
       } else {
         throw new Error(`Cannot delete undefined question with id ${id}`)

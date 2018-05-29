@@ -2,19 +2,23 @@ export default {
   namespaced: true,
   state () {
     return {
-      answers: new Map(),
-      answerId: 0
+      answers: {},
+      answerId: 0,
+      updated: false
     }
   },
   getters: {
-    all: state => Array.from(state.answers.values()),
+    all: state => Array.from(state.answers),
     forQuestion: state => questionId => {
-      return Array.from(state.answers.values())
+      console.log('ANSWERS', state.answerId, Array.from(Object.values(state.answers)))
+      return Array.from(Object.values(state.answers))
         .filter(answer => answer.questionId === questionId)
     },
-    withId: state => id => state.answers.get(id),
+    withId: state => id => {
+      console.log('AAAGH', state.answers[id])
+      return state.answers[id]},
     getAnswerPlayers: (state, getters) => id => {
-      return state.answers.get(id).players
+      return state.answers[id].players
         .map(id => getters.players.withId(id))
     }
   },
@@ -23,7 +27,12 @@ export default {
       state.answerId++
     },
     store: (state, answer) => {
-      state.answers.set(answer.id, answer)
+      console.log('answer', answer)
+      state.answers[answer.id] = Object.assign(
+        {},
+        state.answers[answer.id],
+        answer
+      )
     },
     delete: (state, id) => {
       state.answers.delete(id)
@@ -33,10 +42,11 @@ export default {
     create ({ commit, state }, payload) {
       let { answer } = payload
       console.log('hello', answer)
-      if (state.answers.get(answer.id) === undefined) {
+      if (state.answers[answer.id] === undefined) {
         commit('store', {
           ...answer,
-          id: state.answerId
+          id: state.answerId,
+          players: []
         })
         commit('incrementCounter')
       }
@@ -46,7 +56,7 @@ export default {
       commit('store', question)
     },
     delete ({ commit, state }, id) {
-      if (state.answers.get(id) !== undefined) {
+      if (state.answers[id] !== undefined) {
         commit('delete', id)
       } else {
         throw new Error(`Cannot delete undefined answer with id ${id}`)

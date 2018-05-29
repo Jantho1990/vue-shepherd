@@ -42,6 +42,7 @@ export default {
   data: function () {
     return {
       newAnswer: ''
+      // answers: this.getAnswers()
     }
   },
   methods: {
@@ -84,6 +85,9 @@ export default {
     },
     getUnselectedPlayers () {
       this.$store.questions.getUnselectedPlayers(this.id)
+    },
+    getAnswers () {
+      return this.$store.getters['answers/forQuestion'](this.id)
     }
   },
   props: {

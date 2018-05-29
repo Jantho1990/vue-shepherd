@@ -47,9 +47,7 @@ export default {
     })
   },
   data () {
-    return {
-      questions: this.questions.all
-    }
+    return {}
   },
   props: {
     players: {
